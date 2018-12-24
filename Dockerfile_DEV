@@ -1,0 +1,21 @@
+FROM golang:1.11.2-alpine3.8
+
+RUN apk update && apk add gcc git libc-dev
+
+RUN go get github.com/gin-gonic/gin \
+	&& go get -u github.com/jinzhu/gorm \
+	&& go get github.com/gin-gonic/contrib/static \
+	&& go get github.com/mattn/go-sqlite3 \
+	&& go get github.com/qor/admin \
+	&& go get  github.com/qor/qor
+
+RUN mkdir -p /app
+WORKDIR /app
+
+ADD . /app
+
+RUN go build ./main.go
+
+EXPOSE 80
+
+CMD ["./main"]
